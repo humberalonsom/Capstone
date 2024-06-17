@@ -65,6 +65,13 @@ st.markdown("""
         position: fixed;
         bottom: 10px;
         right: 10px;
+        display: flex;
+        gap: 10px;
+    }
+    .flag-icon {
+        width: 30px;
+        height: 20px;
+        cursor: pointer;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -81,10 +88,26 @@ def translate_text(text, dest_language):
     except Exception as e:
         return text
 
-# Selección de idioma en la esquina inferior derecha
-languages = {"English": "en", "Español": "es", "Français": "fr", "Deutsch": "de", "中文": "zh-cn"}
-language = st.sidebar.selectbox("Language", list(languages.keys()), index=0, format_func=lambda x: x)
-dest_language = languages[language]
+# Selección de idioma con íconos de banderas en la esquina inferior derecha
+languages = {
+    "English": ("en", "https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"),
+    "Español": ("es", "https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg"),
+    "Français": ("fr", "https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg"),
+    "Deutsch": ("de", "https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg"),
+    "中文": ("zh-cn", "https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_the_People%27s_Republic_of_China.svg")
+}
+st.markdown("<div class='language-selector'>", unsafe_allow_html=True)
+for lang, (code, flag_url) in languages.items():
+    st.markdown(f"""
+        <a href="?lang={code}">
+            <img src="{flag_url}" class="flag-icon" title="{lang}" alt="{lang}">
+        </a>
+    """, unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
+
+# Obtener el idioma seleccionado de la URL
+query_params = st.experimental_get_query_params()
+dest_language = query_params.get("lang", ["en"])[0]
 
 # Traducir texto de la interfaz
 def t(text):
@@ -158,15 +181,4 @@ elif tab == t("State Data"):
 
 elif tab == t("Industry Data"):
     st.markdown(f"<div class='section-header'>{t('Industry Data')}</div>", unsafe_allow_html=True)
-    industry = st.selectbox(t("Select an industry"), df_industry['product_category_name'].unique())
-    filtered_df = df_industry[df_industry['product_category_name'] == industry]
-    
-    st.markdown(f"<div class='section-header'>{t('Count of States for')} {format_label(industry)}</div>", unsafe_allow_html=True)
-    count_state_bar_chart = px.bar(filtered_df, x=filtered_df['customer_state'].apply(format_label), y='Count_state', title=t(f'Count of States for {format_label(industry)}'))
-    count_state_bar_chart.update_layout(xaxis_title=t('Customer State'), yaxis_title=t('Count State'))
-    st.plotly_chart(count_state_bar_chart)
-    
-    st.markdown(f"<div class='section-header'>{t('Average Price for')} {format_label(industry)} {t('by State')}</div>", unsafe_allow_html=True)
-    average_price_bar_chart = px.bar(filtered_df, x=filtered_df['customer_state'].apply(format_label), y='Average Price per state', title=t(f'Average Price for {format_label(industry)} by State'))
-    average_price_bar_chart.update_layout(xaxis_title=t('Customer State'), yaxis_title=t('Average Price'))
-    st.plotly_chart(average_price_bar_chart)
+    industry = st.selectbox(t("Select an industry"), df_industry['product_category_name'].### Código `app.py` Completo con Selección de Idioma y Banderas
