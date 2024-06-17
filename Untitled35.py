@@ -61,6 +61,11 @@ st.markdown("""
         background-color: #E8F5E9;
         border: 2px solid #4CAF50;
     }
+    .language-selector {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -76,12 +81,14 @@ def translate_text(text, dest_language):
     except Exception as e:
         return text
 
-# Selección de idioma
-language = st.sidebar.selectbox("Select Language", ["en", "es", "fr", "de", "zh-cn"])
+# Selección de idioma en la esquina inferior derecha
+languages = {"English": "en", "Español": "es", "Français": "fr", "Deutsch": "de", "中文": "zh-cn"}
+language = st.sidebar.selectbox("Language", list(languages.keys()), index=0, format_func=lambda x: x)
+dest_language = languages[language]
 
 # Traducir texto de la interfaz
 def t(text):
-    return translate_text(text, language)
+    return translate_text(text, dest_language)
 
 # Variables para almacenamiento temporal de resultados
 df_customers_filtered = pd.DataFrame()
@@ -122,13 +129,13 @@ if tab == t("Graphs"):
 
         st.markdown(f"<div class='section-header'>{t('Average Price per Industry')}</div>", unsafe_allow_html=True)
         average_price_data = df_customers_filtered.groupby('product_category_name')['average_price'].mean().reset_index()
-        average_price_bar_chart = px.bar(average_price_data, x='product_category_name', y='average_price', title=t('Average Price per Industry'))
+        average_price_bar_chart = px.bar(average_price_data, x=average_price_data['product_category_name'].apply(format_label), y='average_price', title=t('Average Price per Industry'))
         average_price_bar_chart.update_layout(xaxis_title=t('Product Category Name'), yaxis_title=t('Average Price'))
         st.plotly_chart(average_price_bar_chart)
 
         st.markdown(f"<div class='section-header'>{t('Customer Value per Industry')}</div>", unsafe_allow_html=True)
         customer_value_data = df_customers_filtered.groupby('product_category_name')['customer_lifetime_value'].mean().reset_index()
-        customer_value_bar_chart = px.bar(customer_value_data, x='product_category_name', y='customer_lifetime_value', title=t('Customer Value per Industry'))
+        customer_value_bar_chart = px.bar(customer_value_data, x=customer_value_data['product_category_name'].apply(format_label), y='customer_lifetime_value', title=t('Customer Value per Industry'))
         customer_value_bar_chart.update_layout(xaxis_title=t('Product Category Name'), yaxis_title=t('Customer Lifetime Value'))
         st.plotly_chart(customer_value_bar_chart)
     else:
@@ -140,12 +147,12 @@ elif tab == t("State Data"):
     filtered_df = df_state[df_state['customer_state'] == state]
     
     st.markdown(f"<div class='section-header'>{t('Count of Industries in')} {state}</div>", unsafe_allow_html=True)
-    count_industry_bar_chart = px.bar(filtered_df, x='product_category_name', y='Count_industry', title=t(f'Count of Industries in {state}'))
+    count_industry_bar_chart = px.bar(filtered_df, x=filtered_df['product_category_name'].apply(format_label), y='Count_industry', title=t(f'Count of Industries in {state}'))
     count_industry_bar_chart.update_layout(xaxis_title=t('Product Category Name'), yaxis_title=t('Count Industry'))
     st.plotly_chart(count_industry_bar_chart)
     
     st.markdown(f"<div class='section-header'>{t('Average Price in')} {state} {t('by Industry')}</div>", unsafe_allow_html=True)
-    average_price_bar_chart = px.bar(filtered_df, x='product_category_name', y='Average Price per state', title=t(f'Average Price in {state} by Industry'))
+    average_price_bar_chart = px.bar(filtered_df, x=filtered_df['product_category_name'].apply(format_label), y='Average Price per state', title=t(f'Average Price in {state} by Industry'))
     average_price_bar_chart.update_layout(xaxis_title=t('Product Category Name'), yaxis_title=t('Average Price'))
     st.plotly_chart(average_price_bar_chart)
 
@@ -155,11 +162,11 @@ elif tab == t("Industry Data"):
     filtered_df = df_industry[df_industry['product_category_name'] == industry]
     
     st.markdown(f"<div class='section-header'>{t('Count of States for')} {format_label(industry)}</div>", unsafe_allow_html=True)
-    count_state_bar_chart = px.bar(filtered_df, x='customer_state', y='Count_state', title=t(f'Count of States for {format_label(industry)}'))
+    count_state_bar_chart = px.bar(filtered_df, x=filtered_df['customer_state'].apply(format_label), y='Count_state', title=t(f'Count of States for {format_label(industry)}'))
     count_state_bar_chart.update_layout(xaxis_title=t('Customer State'), yaxis_title=t('Count State'))
     st.plotly_chart(count_state_bar_chart)
     
     st.markdown(f"<div class='section-header'>{t('Average Price for')} {format_label(industry)} {t('by State')}</div>", unsafe_allow_html=True)
-    average_price_bar_chart = px.bar(filtered_df, x='customer_state', y='Average Price per state', title=t(f'Average Price for {format_label(industry)} by State'))
+    average_price_bar_chart = px.bar(filtered_df, x=filtered_df['customer_state'].apply(format_label), y='Average Price per state', title=t(f'Average Price for {format_label(industry)} by State'))
     average_price_bar_chart.update_layout(xaxis_title=t('Customer State'), yaxis_title=t('Average Price'))
     st.plotly_chart(average_price_bar_chart)
