@@ -17,6 +17,12 @@ st.set_page_config(page_title="Customer Dashboard", layout="wide")
 # Crear pestañas usando selectbox
 tab = st.sidebar.selectbox("Select a tab", ["Customer Database", "Graphs", "State Data", "Industry Data"])
 
+uploaded_file = st.sidebar.file_uploader("Upload an Excel file", type=["xlsx"])
+if uploaded_file:
+    df_uploaded = pd.read_excel(uploaded_file)
+    customer_ids = df_uploaded['customer_id'].astype(str).tolist()
+    df_customers = df_customers[df_customers['customer_id'].astype(str).isin(customer_ids)]
+
 if tab == "Customer Database":
     st.title("Customer Database")
     customer_id = st.text_input("Customer ID:")
