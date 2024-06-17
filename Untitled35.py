@@ -14,34 +14,37 @@ def format_label(label):
 # Configurar la página de Streamlit
 st.set_page_config(page_title="Customer Dashboard", layout="wide")
 
-# Crear pestañas usando selectbox
-tab = st.sidebar.selectbox("Select a tab", ["Customer Database", "Graphs", "State Data", "Industry Data"])
-
-uploaded_file = st.sidebar.file_uploader("Upload an Excel file", type=["xlsx"])
+# Cargar archivo Excel
+uploaded_file = st.sidebar.file_uploader("Upload an Excel file with Customer IDs", type=["xlsx"])
 if uploaded_file:
     df_uploaded = pd.read_excel(uploaded_file)
     customer_ids = df_uploaded['customer_id'].astype(str).tolist()
-    df_customers = df_customers[df_customers['customer_id'].astype(str).isin(customer_ids)]
+    df_customers_filtered = df_customers[df_customers['customer_id'].astype(str).isin(customer_ids)]
+else:
+    df_customers_filtered = df_customers
+
+# Crear pestañas usando selectbox
+tab = st.sidebar.selectbox("Select a tab", ["Customer Database", "Graphs", "State Data", "Industry Data"])
 
 if tab == "Customer Database":
     st.title("Customer Database")
     customer_id = st.text_input("Customer ID:")
     if st.button("Search"):
-        query = df_customers[df_customers['customer_id'].astype(str).str.strip() == customer_id.strip()]
+        query = df_customers_filtered[df_customers_filtered['customer_id'].astype(str).str.strip() == customer_id.strip()]
         st.write(query)
     if st.button("Clear"):
-        st.write(df_customers)
+        st.write(df_customers_filtered)
 
 elif tab == "Graphs":
     st.title("Graphs")
-    cluster_pie_chart = px.pie(df_customers, names='cluster', title='Cluster Distribution')
+    cluster_pie_chart = px.pie(df_customers_filtered, names='cluster', title='Cluster Distribution')
     st.plotly_chart(cluster_pie_chart)
 
-    average_price_data = df_customers.groupby('product_category_name')['average_price'].mean().reset_index()
+    average_price_data = df_customers_filtered.groupby('product_category_name')['average_price'].mean().reset_index()
     average_price_bar_chart = px.bar(average_price_data, x='product_category_name', y='average_price', title='Average Price per Industry')
     st.plotly_chart(average_price_bar_chart)
 
-    customer_value_data = df_customers.groupby('product_category_name')['customer_lifetime_value'].mean().reset_index()
+    customer_value_data = df_customers_filtered.groupby('product_category_name')['customer_lifetime_value'].mean().reset_index()
     customer_value_bar_chart = px.bar(customer_value_data, x='product_category_name', y='customer_lifetime_value', title='Customer Value per Industry')
     st.plotly_chart(customer_value_bar_chart)
 
