@@ -14,41 +14,9 @@ def format_label(label):
 # Configurar la página de Streamlit
 st.set_page_config(page_title="Customer Insights Dashboard", layout="wide")
 
-# Añadir estilos CSS personalizados
-st.markdown("""
-    <style>
-    .main-title {
-        font-size: 2.5em;
-        color: #4CAF50;
-        text-align: center;
-        font-weight: bold;
-    }
-    .sub-title {
-        font-size: 2em;
-        color: #2E7D32;
-        text-align: center;
-        font-weight: bold;
-    }
-    .section-header {
-        font-size: 1.5em;
-        color: #1B5E20;
-        font-weight: bold;
-        margin-top: 20px;
-    }
-    .uploaded-data, .search-results {
-        margin-top: 20px;
-    }
-    .dataframe {
-        border: 2px solid #4CAF50;
-        border-radius: 10px;
-        padding: 10px;
-        margin-top: 10px;
-    }
-    .sidebar .sidebar-content {
-        background-color: #E8F5E9;
-    }
-    </style>
-""", unsafe_allow_html=True)
+# Cargar el archivo CSS
+with open('style.css') as f:
+    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 # Título principal
 st.markdown("<div class='main-title'>Customer Insights Dashboard</div>", unsafe_allow_html=True)
