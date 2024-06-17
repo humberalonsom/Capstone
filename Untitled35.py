@@ -181,4 +181,5 @@ elif tab == t("State Data"):
 
 elif tab == t("Industry Data"):
     st.markdown(f"<div class='section-header'>{t('Industry Data')}</div>", unsafe_allow_html=True)
-    industry = st.selectbox(t("Select an industry"), df_industry['product_category_name'].### Código `app.py` Completo con Selección de Idioma y Banderas
+    industry = st.selectbox(t("Select an industry"), df_industry['product_category_name'].unique())
+    filtered_df = df_industry[df_industry['product_category_name'] == industry]
