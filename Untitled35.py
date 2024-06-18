@@ -243,26 +243,26 @@ def display_industry_data(df, industry):
         st.markdown(f"<div class='section-header'>{t('Sales Data for')} {industry}</div>", unsafe_allow_html=True)
         st.write(filtered_df)
 
-        # Verificar si las columnas existen antes de intentar acceder a ellas
-        if 'average_price' in filtered_df.columns:
+        # Calcular el precio promedio y el valor de vida del cliente basado en pedidos
+        if 'price' in filtered_df.columns and 'order_id' in filtered_df.columns:
+            average_price_industry = filtered_df['price'].mean()
+            customer_lifetime_value_industry = filtered_df.groupby('customer_id')['price'].sum().mean()
+            
             st.markdown(f"<div class='section-header'>{t('Average Price in')} {industry}</div>", unsafe_allow_html=True)
-            average_price_industry = filtered_df['average_price'].mean()
             st.metric(label=t('Average Price'), value=f"${average_price_industry:,.2f}")
 
-            fig1 = px.histogram(filtered_df, x='average_price', title=t('Distribution of Average Prices'))
-            st.plotly_chart(fig1)
-        else:
-            st.warning(f"{t('No average price data available for')} {industry}.")
-
-        if 'customer_lifetime_value' in filtered_df.columns:
             st.markdown(f"<div class='section-header'>{t('Customer Lifetime Value in')} {industry}</div>", unsafe_allow_html=True)
-            customer_lifetime_value_industry = filtered_df['customer_lifetime_value'].mean()
             st.metric(label=t('Customer Lifetime Value'), value=f"${customer_lifetime_value_industry:,.2f}")
 
-            fig2 = px.histogram(filtered_df, x='customer_lifetime_value', title=t('Distribution of Customer Lifetime Values'))
+            st.markdown(f"<div class='section-header'>{t('Graphs for')} {industry}</div>", unsafe_allow_html=True)
+            
+            fig1 = px.histogram(filtered_df, x='price', title=t('Distribution of Prices'))
+            st.plotly_chart(fig1)
+            
+            fig2 = px.histogram(filtered_df.groupby('customer_id')['price'].sum().reset_index(), x='price', title=t('Distribution of Customer Lifetime Values'))
             st.plotly_chart(fig2)
         else:
-            st.warning(f"{t('No customer lifetime value data available for')} {industry}.")
+            st.warning(f"{t('No price or order data available for')} {industry}.")
     else:
         st.markdown(f"<div class='sub-title'>{t('No data to display for')} {industry}.</div>", unsafe_allow_html=True)
 
@@ -274,3 +274,4 @@ elif tab == t("State Data"):
 elif tab == t("Industry Data"):
     industry = st.selectbox(t("Select an industry"), df_industry['product_category_name'].unique())
     display_industry_data(df_industry, industry)
+
