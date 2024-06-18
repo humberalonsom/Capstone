@@ -3,10 +3,17 @@ import pandas as pd
 import plotly.express as px
 from googletrans import Translator
 
+# Función para cargar archivos CSV
+def load_data(file):
+    return pd.read_csv(file)
+
 # Cargar los datos del archivo CSV
-df_customers = pd.read_csv("/mnt/data/clustered_df.csv")
-df_state = pd.read_csv("/mnt/data/state.csv")
-df_industry = pd.read_csv("/mnt/data/industry.csv")
+try:
+    df_customers = load_data("/mnt/data/clustered_df.csv")
+    df_state = load_data("/mnt/data/state.csv")
+    df_industry = load_data("/mnt/data/industry.csv")
+except FileNotFoundError:
+    st.error("Files not found. Please upload the CSV files.")
 
 # Función para reemplazar guiones bajos con espacios y capitalizar
 def format_label(label):
@@ -132,6 +139,19 @@ if uploaded_file:
     st.sidebar.write(t("### Uploaded Data"))
     st.sidebar.write(df_uploaded)
 
+# Cargar archivos CSV desde la interfaz
+st.sidebar.markdown(f"<div class='section-header'>{t('Upload CSV Files')}</div>", unsafe_allow_html=True)
+uploaded_customers = st.sidebar.file_uploader(t("Upload clustered_df.csv"), type=["csv"], key="customers_csv")
+uploaded_state = st.sidebar.file_uploader(t("Upload state.csv"), type=["csv"], key="state_csv")
+uploaded_industry = st.sidebar.file_uploader(t("Upload industry.csv"), type=["csv"], key="industry_csv")
+
+if uploaded_customers:
+    df_customers = pd.read_csv(uploaded_customers)
+if uploaded_state:
+    df_state = pd.read_csv(uploaded_state)
+if uploaded_industry:
+    df_industry = pd.read_csv(uploaded_industry)
+
 # Interfaz para la búsqueda manual
 st.sidebar.markdown(f"<div class='section-header'>{t('Manual Search')}</div>", unsafe_allow_html=True)
 customer_id = st.sidebar.text_input(t("Customer ID:"))
@@ -191,4 +211,5 @@ elif tab == t("Industry Data"):
     industry = st.selectbox(t("Select an industry"), df_industry['product_category_name'].unique())
     filtered_df = df_industry[df_industry['product_category_name'] == industry]
     st.write(filtered_df)
+
 
