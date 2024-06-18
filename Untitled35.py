@@ -116,7 +116,7 @@ inject_css()
 # Mostrar el logo en la parte superior
 st.markdown("""
     <div style='text-align: center;'>
-        <img src='https://raw.githubusercontent.com/humberalonsom/Capstone/olist logo.png' width='200'>
+        <img src='https://github.com/humberalonsom/Capstone/blob/main/olist%20logo.png' width='200'>
     </div>
 """, unsafe_allow_html=True)
 
