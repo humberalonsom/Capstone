@@ -1,4 +1,4 @@
-haz que estén las banderas en horizontal alineadas y no en vertical y mejora el diseño (un fondo con colores fade, todo mejor alineado, etc): import streamlit as st
+import streamlit as st
 import pandas as pd
 import plotly.express as px
 from googletrans import Translator
