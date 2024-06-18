@@ -73,7 +73,6 @@ st.markdown("""
         right: 10px;
         display: flex;
         gap: 10px;
-        flex-wrap: wrap;
     }
     .flag-icon {
         width: 30px;
@@ -191,3 +190,4 @@ elif tab == t("Industry Data"):
     industry = st.selectbox(t("Select an industry"), df_industry['product_category_name'].unique())
     filtered_df = df_industry[df_industry['product_category_name'] == industry]
     st.write(filtered_df)
+
