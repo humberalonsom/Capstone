@@ -28,49 +28,69 @@ def inject_css():
     st.markdown("""
         <style>
         body {
-            background-color: #f0f8ff;
-            font-family: 'Arial', sans-serif;
+            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+            font-family: 'Roboto', sans-serif;
         }
         .main-title {
-            font-size: 2.5em;
-            color: #4CAF50;
+            font-size: 3em;
+            color: #ffffff;
             text-align: center;
             font-weight: bold;
             margin-bottom: 20px;
+            text-shadow: 2px 2px 4px #000000;
         }
         .sub-title {
             font-size: 2em;
-            color: #2E7D32;
+            color: #ffffff;
             text-align: center;
             font-weight: bold;
             margin-bottom: 20px;
+            text-shadow: 1px 1px 3px #000000;
         }
         .section-header {
-            font-size: 1.5em;
-            color: #1B5E20;
+            font-size: 1.8em;
+            color: #ffffff;
             font-weight: bold;
             margin-top: 20px;
+            text-shadow: 1px 1px 2px #000000;
         }
         .uploaded-data, .search-results {
             margin-top: 20px;
         }
         .dataframe {
-            border: 2px solid #4CAF50;
+            border: 2px solid #ffffff;
             border-radius: 10px;
             padding: 10px;
             margin-top: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .sidebar .sidebar-content {
-            background-color: #E8F5E9;
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .stButton>button {
-            background-color: #4CAF50;
+            background-color: #ff5722;
             color: white;
             font-weight: bold;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        .stButton>button:hover {
+            background-color: #e64a19;
         }
         .stTextInput>div>div>input {
-            background-color: #E8F5E9;
-            border: 2px solid #4CAF50;
+            background-color: #ffffff;
+            border: 2px solid #ff5722;
+            border-radius: 5px;
+            padding: 5px;
+            transition: all 0.3s ease;
+        }
+        .stTextInput>div>div>input:focus {
+            border-color: #e64a19;
         }
         .language-selector {
             position: fixed;
@@ -83,6 +103,10 @@ def inject_css():
             width: 30px;
             height: 20px;
             cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .flag-icon:hover {
+            transform: scale(1.1);
         }
         </style>
     """, unsafe_allow_html=True)
