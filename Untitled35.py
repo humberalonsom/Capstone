@@ -27,8 +27,7 @@ def format_label(label):
 def inject_css():
     st.markdown("""
         <style>
-        html, body, #root {
-            height: 100%;
+        html, body, [class*="css"] {
             background: #0033cc;  /* Color azul del logo */
             font-family: 'Roboto', sans-serif;
         }
