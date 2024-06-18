@@ -29,12 +29,12 @@ def inject_css():
         <style>
         html, body, #root {
             height: 100%;
-            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+            background: #0033cc;  /* Color azul del logo */
             font-family: 'Roboto', sans-serif;
         }
         .main-title {
             font-size: 3em;
-            color: #ffffff;
+            color: #ffffff;  /* Color blanco del logo */
             text-align: center;
             font-weight: bold;
             margin-bottom: 20px;
@@ -73,7 +73,7 @@ def inject_css():
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .stButton>button {
-            background-color: #ff5722;
+            background-color: #0033cc;  /* Color azul del logo */
             color: white;
             font-weight: bold;
             border-radius: 5px;
@@ -81,17 +81,17 @@ def inject_css():
             transition: all 0.3s ease;
         }
         .stButton>button:hover {
-            background-color: #e64a19;
+            background-color: #002699;  /* Azul más oscuro para hover */
         }
         .stTextInput>div>div>input {
             background-color: #ffffff;
-            border: 2px solid #ff5722;
+            border: 2px solid #0033cc;  /* Color azul del logo */
             border-radius: 5px;
             padding: 5px;
             transition: all 0.3s ease;
         }
         .stTextInput>div>div>input:focus {
-            border-color: #e64a19;
+            border-color: #002699;  /* Azul más oscuro para focus */
         }
         .language-selector {
             display: flex;
@@ -113,6 +113,13 @@ def inject_css():
     """, unsafe_allow_html=True)
 
 inject_css()
+
+# Mostrar el logo en la parte superior
+st.markdown("""
+    <div style='text-align: center;'>
+        <img src='https://raw.githubusercontent.com/TU_NOMBRE_USUARIO/REPO_NOMBRE/master/olist%20logo.png' width='200'>
+    </div>
+""", unsafe_allow_html=True)
 
 # Selección de idioma con íconos de banderas en la parte superior de la página
 languages = {
