@@ -28,7 +28,8 @@ def inject_css():
     st.markdown("""
         <style>
         html, body, [class*="css"] {
-            background: #002699;  /* Color azul del logo */
+            height: 100%;
+            background-color: #0033cc;  /* Color azul del logo */
             font-family: 'Roboto', sans-serif;
         }
         .main-title {
