@@ -4,9 +4,9 @@ import plotly.express as px
 from googletrans import Translator
 
 # Cargar los datos del archivo CSV
-df_customers = pd.read_csv("clustered_df.csv")
-df_state = pd.read_csv("state.csv")
-df_industry = pd.read_csv("industry.csv")
+df_customers = pd.read_csv("/mnt/data/clustered_df.csv")
+df_state = pd.read_csv("/mnt/data/state.csv")
+df_industry = pd.read_csv("/mnt/data/industry.csv")
 
 # Función para reemplazar guiones bajos con espacios y capitalizar
 def format_label(label):
@@ -72,6 +72,7 @@ st.markdown("""
         bottom: 10px;
         right: 10px;
         display: flex;
+        flex-direction: row;
         gap: 10px;
     }
     .flag-icon {
