@@ -28,70 +28,66 @@ def inject_css():
     st.markdown("""
         <style>
         html, body, [class*="css"] {
-            height: 100%;
-            background-color: #0033cc;  /* Color azul del logo */
+            background-color: #f5f5f5;  /* Fondo gris claro para una apariencia profesional */
             font-family: 'Roboto', sans-serif;
         }
         .main-title {
             font-size: 3em;
-            color: #ffffff;  /* Color blanco del logo */
+            color: #333333;  /* Color gris oscuro para el texto principal */
             text-align: center;
             font-weight: bold;
             margin-bottom: 20px;
-            text-shadow: 2px 2px 4px #000000;
         }
         .sub-title {
             font-size: 2em;
-            color: #ffffff;
+            color: #333333;
             text-align: center;
             font-weight: bold;
             margin-bottom: 20px;
-            text-shadow: 1px 1px 3px #000000;
         }
         .section-header {
             font-size: 1.8em;
-            color: #ffffff;
+            color: #333333;
             font-weight: bold;
             margin-top: 20px;
-            text-shadow: 1px 1px 2px #000000;
         }
         .uploaded-data, .search-results {
             margin-top: 20px;
         }
         .dataframe {
-            border: 2px solid #ffffff;
+            border: 2px solid #dddddd;
             border-radius: 10px;
             padding: 10px;
             margin-top: 10px;
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .sidebar .sidebar-content {
             background-color: #ffffff;
             border-radius: 10px;
             padding: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .stButton>button {
-            background-color: #0033cc;  /* Color azul del logo */
+            background-color: #007bff;  /* Color azul profesional */
             color: white;
             font-weight: bold;
             border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
         }
         .stButton>button:hover {
-            background-color: #002699;  /* Azul más oscuro para hover */
+            background-color: #0056b3;  /* Azul más oscuro para hover */
         }
         .stTextInput>div>div>input {
             background-color: #ffffff;
-            border: 2px solid #0033cc;  /* Color azul del logo */
+            border: 2px solid #007bff;  /* Color azul profesional */
             border-radius: 5px;
             padding: 5px;
             transition: all 0.3s ease;
         }
         .stTextInput>div>div>input:focus {
-            border-color: #002699;  /* Azul más oscuro para focus */
+            border-color: #0056b3;  /* Azul más oscuro para focus */
         }
         .language-selector {
             display: flex;
