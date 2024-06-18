@@ -216,7 +216,7 @@ def display_graphs(df):
         st.markdown(f"<div class='section-header'>{t('Customer Value per Industry')}</div>", unsafe_allow_html=True)
         customer_value_data = df.groupby('product_category_name')['customer_lifetime_value'].mean().reset_index()
         customer_value_bar_chart = px.bar(customer_value_data, x=customer_value_data['product_category_name'].apply(format_label), y='customer_lifetime_value', title=t('Customer Value per Industry'))
-        customer_value_bar_chart.update_layout(xaxis_title=t('Product Category Name'), yaxis_title= t('Customer Lifetime Value'), template='plotly_dark')
+        customer_value_bar_chart.update_layout(xaxis_title=t('Product Category Name'), yaxis_title=t('Customer Lifetime Value'), template='plotly_dark')
         st.plotly_chart(customer_value_bar_chart)
     else:
         st.markdown(f"<div class='sub-title'>{t('No data to display in graphs. Upload an Excel file or use the search bar to find customers.')}</div>", unsafe_allow_html=True)
@@ -238,7 +238,28 @@ def display_state_data(df, state):
 def display_industry_data(df, industry):
     st.markdown(f"<div class='section-header'>{t('Industry Data')}</div>", unsafe_allow_html=True)
     filtered_df = df[df['product_category_name'] == industry]
-    st.write(filtered_df)
+    
+    if not filtered_df.empty:
+        st.markdown(f"<div class='section-header'>{t('Sales Data for')} {industry}</div>", unsafe_allow_html=True)
+        st.write(filtered_df)
+        
+        st.markdown(f"<div class='section-header'>{t('Average Price in')} {industry}</div>", unsafe_allow_html=True)
+        average_price_industry = filtered_df['average_price'].mean()
+        st.metric(label=t('Average Price'), value=f"${average_price_industry:,.2f}")
+        
+        st.markdown(f"<div class='section-header'>{t('Customer Lifetime Value in')} {industry}</div>", unsafe_allow_html=True)
+        customer_lifetime_value_industry = filtered_df['customer_lifetime_value'].mean()
+        st.metric(label=t('Customer Lifetime Value'), value=f"${customer_lifetime_value_industry:,.2f}")
+
+        st.markdown(f"<div class='section-header'>{t('Graphs for')} {industry}</div>", unsafe_allow_html=True)
+        
+        fig1 = px.histogram(filtered_df, x='average_price', title=t('Distribution of Average Prices'))
+        st.plotly_chart(fig1)
+        
+        fig2 = px.histogram(filtered_df, x='customer_lifetime_value', title=t('Distribution of Customer Lifetime Values'))
+        st.plotly_chart(fig2)
+    else:
+        st.markdown(f"<div class='sub-title'>{t('No data to display for')} {industry}.</div>", unsafe_allow_html=True)
 
 if tab == t("Graphs"):
     display_graphs(df_customers_filtered)
@@ -248,9 +269,3 @@ elif tab == t("State Data"):
 elif tab == t("Industry Data"):
     industry = st.selectbox(t("Select an industry"), df_industry['product_category_name'].unique())
     display_industry_data(df_industry, industry)
-
-
-
-
-
-
