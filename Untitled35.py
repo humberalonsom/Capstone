@@ -27,7 +27,8 @@ def format_label(label):
 def inject_css():
     st.markdown("""
         <style>
-        html, body, [class*="css"] {
+        html, body, #root {
+            height: 100%;
             background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
             font-family: 'Roboto', sans-serif;
         }
@@ -244,5 +245,6 @@ elif tab == t("State Data"):
 elif tab == t("Industry Data"):
     industry = st.selectbox(t("Select an industry"), df_industry['product_category_name'].unique())
     display_industry_data(df_industry, industry)
+
 
 
