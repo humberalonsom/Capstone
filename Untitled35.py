@@ -4,9 +4,13 @@ import plotly.express as px
 from googletrans import Translator
 
 # Cargar los datos del archivo CSV
-@st.cache
+@st.cache_data(show_spinner=True)
 def load_data(file_path):
-    return pd.read_csv(file_path)
+    try:
+        return pd.read_csv(file_path)
+    except FileNotFoundError:
+        st.error(f"El archivo {file_path} no se encontró.")
+        return pd.DataFrame()
 
 df_customers = load_data("clustered_df.csv")
 df_state = load_data("state.csv")
@@ -91,7 +95,7 @@ st.markdown("<div class='main-title'>Customer Insights Dashboard</div>", unsafe_
 # Función para traducir texto
 translator = Translator()
 
-@st.cache
+@st.cache_data(show_spinner=True)
 def translate_text(text, dest_language):
     try:
         return translator.translate(text, dest_language).text
