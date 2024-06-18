@@ -28,26 +28,26 @@ def inject_css():
     st.markdown("""
         <style>
         html, body, [class*="css"] {
-            background-color: #f5f5f5;  /* Fondo gris claro para una apariencia profesional */
+            background-color: #f0f8ff;  /* Fondo azul claro */
             font-family: 'Roboto', sans-serif;
         }
         .main-title {
             font-size: 3em;
-            color: #333333;  /* Color gris oscuro para el texto principal */
+            color: #0033cc;  /* Azul principal */
             text-align: center;
             font-weight: bold;
             margin-bottom: 20px;
         }
         .sub-title {
             font-size: 2em;
-            color: #333333;
+            color: #0033cc;  /* Azul principal */
             text-align: center;
             font-weight: bold;
             margin-bottom: 20px;
         }
         .section-header {
             font-size: 1.8em;
-            color: #333333;
+            color: #0033cc;  /* Azul principal */
             font-weight: bold;
             margin-top: 20px;
         }
@@ -55,21 +55,21 @@ def inject_css():
             margin-top: 20px;
         }
         .dataframe {
-            border: 2px solid #dddddd;
+            border: 2px solid #0033cc;  /* Azul principal */
             border-radius: 10px;
             padding: 10px;
             margin-top: 10px;
-            background: #ffffff;
+            background: #ffffff;  /* Blanco */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .sidebar .sidebar-content {
-            background-color: #ffffff;
+            background-color: #ffffff;  /* Blanco */
             border-radius: 10px;
             padding: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .stButton>button {
-            background-color: #007bff;  /* Color azul profesional */
+            background-color: #0033cc;  /* Azul principal */
             color: white;
             font-weight: bold;
             border-radius: 5px;
@@ -77,17 +77,17 @@ def inject_css():
             transition: all 0.3s ease;
         }
         .stButton>button:hover {
-            background-color: #0056b3;  /* Azul más oscuro para hover */
+            background-color: #002699;  /* Azul más oscuro para hover */
         }
         .stTextInput>div>div>input {
-            background-color: #ffffff;
-            border: 2px solid #007bff;  /* Color azul profesional */
+            background-color: #ffffff;  /* Blanco */
+            border: 2px solid #0033cc;  /* Azul principal */
             border-radius: 5px;
             padding: 5px;
             transition: all 0.3s ease;
         }
         .stTextInput>div>div>input:focus {
-            border-color: #0056b3;  /* Azul más oscuro para focus */
+            border-color: #002699;  /* Azul más oscuro para focus */
         }
         .language-selector {
             display: flex;
@@ -216,7 +216,7 @@ def display_graphs(df):
         st.markdown(f"<div class='section-header'>{t('Customer Value per Industry')}</div>", unsafe_allow_html=True)
         customer_value_data = df.groupby('product_category_name')['customer_lifetime_value'].mean().reset_index()
         customer_value_bar_chart = px.bar(customer_value_data, x=customer_value_data['product_category_name'].apply(format_label), y='customer_lifetime_value', title=t('Customer Value per Industry'))
-        customer_value_bar_chart.update_layout(xaxis_title=t('Product Category Name'), yaxis_title=t('Customer Lifetime Value'), template='plotly_dark')
+        customer_value_bar_chart.update_layout(xaxis_title=t('Product Category Name'), yaxis_title= t('Customer Lifetime Value'), template='plotly_dark')
         st.plotly_chart(customer_value_bar_chart)
     else:
         st.markdown(f"<div class='sub-title'>{t('No data to display in graphs. Upload an Excel file or use the search bar to find customers.')}</div>", unsafe_allow_html=True)
@@ -248,6 +248,7 @@ elif tab == t("State Data"):
 elif tab == t("Industry Data"):
     industry = st.selectbox(t("Select an industry"), df_industry['product_category_name'].unique())
     display_industry_data(df_industry, industry)
+
 
 
 
