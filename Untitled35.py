@@ -19,7 +19,7 @@ st.set_page_config(page_title="Customer Insights Dashboard", layout="wide")
 st.markdown("""
     <style>
     body {
-        background-color: #f0f8ff;
+        background: linear-gradient(to bottom, #f0f8ff, #e0f7fa);
         font-family: 'Arial', sans-serif;
     }
     .main-title {
@@ -41,6 +41,7 @@ st.markdown("""
         color: #1B5E20;
         font-weight: bold;
         margin-top: 20px;
+        margin-bottom: 10px;
     }
     .uploaded-data, .search-results {
         margin-top: 20px;
@@ -50,6 +51,7 @@ st.markdown("""
         border-radius: 10px;
         padding: 10px;
         margin-top: 10px;
+        background-color: white;
     }
     .sidebar .sidebar-content {
         background-color: #E8F5E9;
@@ -58,10 +60,12 @@ st.markdown("""
         background-color: #4CAF50;
         color: white;
         font-weight: bold;
+        border-radius: 5px;
     }
     .stTextInput>div>div>input {
         background-color: #E8F5E9;
         border: 2px solid #4CAF50;
+        border-radius: 5px;
     }
     .language-selector {
         position: fixed;
@@ -69,6 +73,7 @@ st.markdown("""
         right: 10px;
         display: flex;
         gap: 10px;
+        flex-wrap: wrap;
     }
     .flag-icon {
         width: 30px;
