@@ -133,12 +133,18 @@ df_customers_filtered = pd.DataFrame()
 # Función para manejar la carga de archivos
 def handle_file_upload(uploaded_file):
     if uploaded_file:
-        df_uploaded = pd.read_excel(uploaded_file)
-        customer_ids = df_uploaded['customer_id'].astype(str).tolist()
-        df_filtered = df_customers[df_customers['customer_id'].astype(str).isin(customer_ids)]
-        st.sidebar.write(t("### Uploaded Data"))
-        st.sidebar.write(df_uploaded)
-        return df_filtered
+        try:
+            df_uploaded = pd.read_excel(uploaded_file)
+            if 'customer_id' not in df_uploaded.columns:
+                st.sidebar.error(t("The uploaded file must contain a 'customer_id' column."))
+                return pd.DataFrame()
+            customer_ids = df_uploaded['customer_id'].astype(str).tolist()
+            df_filtered = df_customers[df_customers['customer_id'].astype(str).isin(customer_ids)]
+            st.sidebar.write(t("### Uploaded Data"))
+            st.sidebar.write(df_uploaded)
+            return df_filtered
+        except Exception as e:
+            st.sidebar.error(t("Error processing the uploaded file. Please ensure it is an Excel file with a 'customer_id' column."))
     return pd.DataFrame()
 
 # Cargar archivo Excel
