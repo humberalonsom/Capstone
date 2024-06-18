@@ -93,16 +93,15 @@ def inject_css():
             border-color: #e64a19;
         }
         .language-selector {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
             display: flex;
-            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
         }
         .flag-icon {
             width: 30px;
             height: 20px;
             cursor: pointer;
+            margin: 0 5px;
             transition: transform 0.3s ease;
         }
         .flag-icon:hover {
@@ -113,20 +112,7 @@ def inject_css():
 
 inject_css()
 
-# Título principal
-st.markdown("<div class='main-title'>Customer Insights Dashboard</div>", unsafe_allow_html=True)
-
-# Función para traducir texto
-translator = Translator()
-
-@st.cache_data(show_spinner=True)
-def translate_text(text, dest_language):
-    try:
-        return translator.translate(text, dest_language).text
-    except Exception as e:
-        return text
-
-# Selección de idioma con íconos de banderas en la esquina inferior derecha
+# Selección de idioma con íconos de banderas en la parte superior de la página
 languages = {
     "English": ("en", "https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"),
     "Español": ("es", "https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg"),
@@ -142,6 +128,19 @@ for lang, (code, flag_url) in languages.items():
         </a>
     """, unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
+
+# Título principal
+st.markdown("<div class='main-title'>Customer Insights Dashboard</div>", unsafe_allow_html=True)
+
+# Función para traducir texto
+translator = Translator()
+
+@st.cache_data(show_spinner=True)
+def translate_text(text, dest_language):
+    try:
+        return translator.translate(text, dest_language).text
+    except Exception as e:
+        return text
 
 # Obtener el idioma seleccionado de la URL
 query_params = st.experimental_get_query_params()
