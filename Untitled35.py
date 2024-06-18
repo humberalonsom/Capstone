@@ -27,7 +27,8 @@ def format_label(label):
 def inject_css():
     st.markdown("""
         <style>
-        html, body, [class*="css"] {
+        html, body, #root {
+            height: 100%;
             background: #0033cc;  /* Color azul del logo */
             font-family: 'Roboto', sans-serif;
         }
@@ -116,7 +117,7 @@ inject_css()
 # Mostrar el logo en la parte superior
 st.markdown("""
     <div style='text-align: center;'>
-        <img src='olist_logo.png' width='200'>
+        <img src='https://raw.githubusercontent.com/humberalonsom/Capstone/main/olist_logo.png' width='200'>
     </div>
 """, unsafe_allow_html=True)
 
@@ -251,6 +252,7 @@ elif tab == t("State Data"):
 elif tab == t("Industry Data"):
     industry = st.selectbox(t("Select an industry"), df_industry['product_category_name'].unique())
     display_industry_data(df_industry, industry)
+
 
 
 
