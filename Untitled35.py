@@ -27,7 +27,7 @@ def format_label(label):
 def inject_css():
     st.markdown("""
         <style>
-        body {
+        html, body, [class*="css"] {
             background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
             font-family: 'Roboto', sans-serif;
         }
@@ -96,6 +96,7 @@ def inject_css():
             display: flex;
             justify-content: center;
             margin-bottom: 20px;
+            margin-top: 10px;
         }
         .flag-icon {
             width: 30px;
