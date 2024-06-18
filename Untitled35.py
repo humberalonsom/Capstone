@@ -3,22 +3,17 @@ import pandas as pd
 import plotly.express as px
 from googletrans import Translator
 
-Cargar los datos del archivo CSV
-
 df_customers = pd.read_csv("clustered_df.csv")
 df_state = pd.read_csv("state.csv")
 df_industry = pd.read_csv("industry.csv")
 
-Función para reemplazar guiones bajos con espacios y capitalizar
 
 def format_label(label):
 return label.replace('_', ' ').capitalize()
 
-Configurar la página de Streamlit
 
 st.set_page_config(page_title="Customer Insights Dashboard", layout="wide")
 
-Añadir estilos CSS personalizados directamente en el código
 
 st.markdown("""
 <style>
@@ -82,7 +77,7 @@ cursor: pointer;
 </style>
 """, unsafe_allow_html=True)
 
-Título principal
+
 
 st.markdown("<div class='main-title'>Customer Insights Dashboard</div>", unsafe_allow_html=True)
 
@@ -96,7 +91,7 @@ return translator.translate(text, dest_language).text
 except Exception as e:
 return text
 
-Selección de idioma con íconos de banderas en la esquina inferior derecha
+
 
 languages = {
 "English": ("en", "https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"),
@@ -114,21 +109,15 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
-Obtener el idioma seleccionado de la URL
-
 query_params = st.experimental_get_query_params()
 dest_language = query_params.get("lang", ["en"])[0]
 
-Traducir texto de la interfaz
 
 def t(text):
 return translate_text(text, dest_language)
 
-Variables para almacenamiento temporal de resultados
 
 df_customers_filtered = pd.DataFrame()
-
-Cargar archivo Excel
 
 uploaded_file = st.sidebar.file_uploader(t("Upload an Excel file with Customer IDs"), type=["xlsx"])
 if uploaded_file:
@@ -138,15 +127,12 @@ df_customers_filtered = df_customers[df_customers['customer_id'].astype(str).isi
 st.sidebar.write(t("### Uploaded Data"))
 st.sidebar.write(df_uploaded)
 
-Interfaz para la búsqueda manual
-
 st.sidebar.markdown(f"<div class='section-header'>{t('Manual Search')}</div>", unsafe_allow_html=True)
 customer_id = st.sidebar.text_input(t("Customer ID:"))
 if st.sidebar.button(t("Search")):
 query = df_customers[df_customers['customer_id'].astype(str).str.strip() == customer_id.strip()]
 df_customers_filtered = pd.concat([df_customers_filtered, query]).drop_duplicates()
 
-Mostrar los datos cargados o buscados manualmente si existen
 
 if not df_customers_filtered.empty:
 st.markdown(f"<div class='sub-title'>{t('Search Results')}</div>", unsafe_allow_html=True)
@@ -154,7 +140,6 @@ st.write(df_customers_filtered)
 else:
 st.markdown(f"<div class='sub-title'>{t('No customer data to display. Upload an Excel file or use the search bar to find customers.')}</div>", unsafe_allow_html=True)
 
-Crear pestañas
 
 tab = st.selectbox(t("Select a tab"), [t("Graphs"), t("State Data"), t("Industry Data")])
 
