@@ -3,6 +3,9 @@ import pandas as pd
 import plotly.express as px
 from googletrans import Translator
 
+# Configurar la página de Streamlit
+st.set_page_config(page_title="Customer Insights Dashboard", layout="wide")
+
 # Cargar los datos del archivo CSV
 @st.cache_data(show_spinner=True)
 def load_data(file_path):
@@ -19,9 +22,6 @@ df_industry = load_data("industry.csv")
 # Función para reemplazar guiones bajos con espacios y capitalizar
 def format_label(label):
     return label.replace('_', ' ').capitalize()
-
-# Configurar la página de Streamlit
-st.set_page_config(page_title="Customer Insights Dashboard", layout="wide")
 
 # Añadir estilos CSS personalizados directamente en el código
 def inject_css():
@@ -214,4 +214,5 @@ elif tab == t("State Data"):
 elif tab == t("Industry Data"):
     industry = st.selectbox(t("Select an industry"), df_industry['product_category_name'].unique())
     display_industry_data(df_industry, industry)
+
 
