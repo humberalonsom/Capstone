@@ -244,7 +244,7 @@ def display_industry_data(df, industry):
         st.write(filtered_df)
 
         # Calcular el precio promedio y el valor de vida del cliente basado en pedidos
-        if 'price' in filtered_df.columns && 'order_id' in filtered_df.columns:
+        if 'price' in filtered_df.columns and 'order_id' in filtered_df.columns:
             average_price_industry = filtered_df['price'].mean()
             customer_lifetime_value_industry = filtered_df.groupby('customer_id')['price'].sum().mean()
             
