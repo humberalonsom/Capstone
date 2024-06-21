@@ -197,7 +197,7 @@ def display_search_results(df):
 display_search_results(df_customers_filtered)
 
 # Crear pestañas
-tab = st.selectbox(t("Select a tab"), [t("Graphs"), t("State Data"), t("Industry Data")])
+tab = st.selectbox(t("Select a tab"), [t("Graphs"), t("State Data"), t("Industry Data"), t("Sales by State")])
 
 def display_graphs(df):
     if not df.empty:
@@ -266,6 +266,25 @@ def display_industry_data(df, industry):
     else:
         st.markdown(f"<div class='sub-title'>{t('No data to display for')} {industry}.</div>", unsafe_allow_html=True)
 
+def display_sales_by_state(df):
+    st.markdown(f"<div class='section-header'>{t('Sales by State')}</div>", unsafe_allow_html=True)
+    
+    if not df.empty:
+        sales_by_state = df.groupby('customer_state')['sales'].sum().reset_index()
+        sales_by_state.columns = ['State', 'Sales']
+        
+        fig = px.choropleth(sales_by_state, 
+                            geojson="https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/brazil-states.geojson",
+                            locations='State', 
+                            featureidkey="properties.sigla", 
+                            color='Sales', 
+                            color_continuous_scale="Viridis",
+                            title=t('Sales by State in Brazil'))
+        fig.update_geos(fitbounds="locations", visible=False)
+        st.plotly_chart(fig)
+    else:
+        st.markdown(f"<div class='sub-title'>{t('No sales data to display.')}</div>", unsafe_allow_html=True)
+
 if tab == t("Graphs"):
     display_graphs(df_customers_filtered)
 elif tab == t("State Data"):
@@ -274,4 +293,6 @@ elif tab == t("State Data"):
 elif tab == t("Industry Data"):
     industry = st.selectbox(t("Select an industry"), df_industry['product_category_name'].unique())
     display_industry_data(df_industry, industry)
+elif tab == t("Sales by State"):
+    display_sales_by_state(df_customers_filtered)
 
