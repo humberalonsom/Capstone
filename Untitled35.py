@@ -244,7 +244,7 @@ def display_industry_data(df, industry):
         st.write(filtered_df)
 
         # Calcular el precio promedio y el valor de vida del cliente basado en pedidos
-        if 'price' in filtered_df.columns and 'order_id' in filtered_df.columns:
+        if 'price' in filtered_df.columns && 'order_id' in filtered_df.columns:
             average_price_industry = filtered_df['price'].mean()
             customer_lifetime_value_industry = filtered_df.groupby('customer_id')['price'].sum().mean()
             
@@ -270,20 +270,19 @@ def display_sales_by_state(df):
     st.markdown(f"<div class='section-header'>{t('Sales by State')}</div>", unsafe_allow_html=True)
     
     if not df.empty:
-        sales_by_state = df.groupby('customer_state')['sales'].sum().reset_index()
-        sales_by_state.columns = ['State', 'Sales']
+        orders_by_state = df.groupby('customer_state').size().reset_index(name='orders')
         
-        fig = px.choropleth(sales_by_state, 
+        fig = px.choropleth(orders_by_state, 
                             geojson="https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/brazil-states.geojson",
-                            locations='State', 
+                            locations='customer_state', 
                             featureidkey="properties.sigla", 
-                            color='Sales', 
+                            color='orders', 
                             color_continuous_scale="Viridis",
-                            title=t('Sales by State in Brazil'))
+                            title=t('Orders by State in Brazil'))
         fig.update_geos(fitbounds="locations", visible=False)
         st.plotly_chart(fig)
     else:
-        st.markdown(f"<div class='sub-title'>{t('No sales data to display.')}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='sub-title'>{t('No order data to display.')}</div>", unsafe_allow_html=True)
 
 if tab == t("Graphs"):
     display_graphs(df_customers_filtered)
