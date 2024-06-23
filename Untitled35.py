@@ -163,16 +163,16 @@ def handle_file_upload(uploaded_file):
     if uploaded_file:
         try:
             df_uploaded = pd.read_excel(uploaded_file)
-            if 'customer_id' not in df_uploaded.columns:
-                st.sidebar.error(t("The uploaded file must contain a 'customer_id' column."))
+            if 'customer id' not in df_uploaded.columns:
+                st.sidebar.error(t("The uploaded file must contain a 'customer id' column."))
                 return pd.DataFrame()
-            customer_ids = df_uploaded['customer_id'].astype(str).tolist()
-            df_filtered = df_customers[df_customers['customer_id'].astype(str).isin(customer_ids)]
+            customer_ids = df_uploaded['customer id'].astype(str).tolist()
+            df_filtered = df_customers[df_customers['customer id'].astype(str).isin(customer_ids)]
             st.sidebar.write(t("### Uploaded Data"))
             st.sidebar.write(df_uploaded)
             return df_filtered
         except Exception as e:
-            st.sidebar.error(t("Error processing the uploaded file. Please ensure it is an Excel file with a 'customer_id' column."))
+            st.sidebar.error(t("Error processing the uploaded file. Please ensure it is an Excel file with a 'customer id' column."))
     return pd.DataFrame()
 
 # Cargar archivo Excel
@@ -183,7 +183,7 @@ df_customers_filtered = handle_file_upload(uploaded_file)
 st.sidebar.markdown(f"<div class='section-header'>{t('Manual Search')}</div>", unsafe_allow_html=True)
 customer_id = st.sidebar.text_input(t("Customer ID:"))
 if st.sidebar.button(t("Search")):
-    query = df_customers[df_customers['customer_id'].astype(str).str.strip() == customer_id.strip()]
+    query = df_customers[df_customers['customer id'].astype(str).str.strip() == customer_id.strip()]
     df_customers_filtered = pd.concat([df_customers_filtered, query]).drop_duplicates()
 
 # Mostrar los datos cargados o buscados manualmente si existen
@@ -208,14 +208,14 @@ def display_graphs(df):
         st.plotly_chart(cluster_pie_chart)
 
         st.markdown(f"<div class='section-header'>{t('Average Price per Industry')}</div>", unsafe_allow_html=True)
-        average_price_data = df.groupby('product_category_name')['average_price'].mean().reset_index()
-        average_price_bar_chart = px.bar(average_price_data, x=average_price_data['product_category_name'].apply(format_label), y='average_price', title=t('Average Price per Industry'))
+        average_price_data = df.groupby('product category name')['average price'].mean().reset_index()
+        average_price_bar_chart = px.bar(average_price_data, x=average_price_data['product category name'].apply(format_label), y='average price', title=t('Average Price per Industry'))
         average_price_bar_chart.update_layout(xaxis_title=t('Product Category Name'), yaxis_title=t('Average Price'), template='plotly_dark')
         st.plotly_chart(average_price_bar_chart)
 
         st.markdown(f"<div class='section-header'>{t('Customer Value per Industry')}</div>", unsafe_allow_html=True)
-        customer_value_data = df.groupby('product_category_name')['customer_lifetime_value'].mean().reset_index()
-        customer_value_bar_chart = px.bar(customer_value_data, x=customer_value_data['product_category_name'].apply(format_label), y='customer_lifetime_value', title=t('Customer Value per Industry'))
+        customer_value_data = df.groupby('product category name')['customer lifetime value'].mean().reset_index()
+        customer_value_bar_chart = px.bar(customer_value_data, x=customer_value_data['product category name'].apply(format_label), y='customer lifetime value', title=t('Customer Value per Industry'))
         customer_value_bar_chart.update_layout(xaxis_title=t('Product Category Name'), yaxis_title=t('Customer Lifetime Value'), template='plotly_dark')
         st.plotly_chart(customer_value_bar_chart)
     else:
@@ -223,30 +223,30 @@ def display_graphs(df):
 
 def display_state_data(df, state):
     st.markdown(f"<div class='section-header'>{t('State Data')}</div>", unsafe_allow_html=True)
-    filtered_df = df[df['customer_state'] == state]
+    filtered_df = df[df['customer state'] == state]
     
     st.markdown(f"<div class='section-header'>{t('Count of Industries in')} {state}</div>", unsafe_allow_html=True)
-    count_industry_bar_chart = px.bar(filtered_df, x=filtered_df['product_category_name'].apply(format_label), y='Count_industry', title=t(f'Count of Industries in {state}'))
+    count_industry_bar_chart = px.bar(filtered_df, x=filtered_df['product category name'].apply(format_label), y='Count industry', title=t(f'Count of Industries in {state}'))
     count_industry_bar_chart.update_layout(xaxis_title=t('Product Category Name'), yaxis_title=t('Count Industry'), template='plotly_dark')
     st.plotly_chart(count_industry_bar_chart)
     
     st.markdown(f"<div class='section-header'>{t('Average Price in')} {state} {t('by Industry')}</div>", unsafe_allow_html=True)
-    average_price_bar_chart = px.bar(filtered_df, x=filtered_df['product_category_name'].apply(format_label), y='Average Price per state', title=t(f'Average Price in {state} by Industry'))
+    average_price_bar_chart = px.bar(filtered_df, x=filtered_df['product category name'].apply(format_label), y='Average Price per state', title=t(f'Average Price in {state} by Industry'))
     average_price_bar_chart.update_layout(xaxis_title=t('Product Category Name'), yaxis_title=t('Average Price'), template='plotly_dark')
     st.plotly_chart(average_price_bar_chart)
 
 def display_industry_data(df, industry):
     st.markdown(f"<div class='section-header'>{t('Industry Data')}</div>", unsafe_allow_html=True)
-    filtered_df = df[df['product_category_name'] == industry]
+    filtered_df = df[df['product category name'] == industry]
     
     if not filtered_df.empty:
         st.markdown(f"<div class='section-header'>{t('Sales Data for')} {industry}</div>", unsafe_allow_html=True)
         st.write(filtered_df)
 
         # Calcular el precio promedio y el valor de vida del cliente basado en pedidos
-        if 'price' in filtered_df.columns and 'order_id' in filtered_df.columns:
+        if 'price' in filtered_df.columns and 'order id' in filtered_df.columns:
             average_price_industry = filtered_df['price'].mean()
-            customer_lifetime_value_industry = filtered_df.groupby('customer_id')['price'].sum().mean()
+            customer_lifetime_value_industry = filtered_df.groupby('customer id')['price'].sum().mean()
             
             st.markdown(f"<div class='section-header'>{t('Average Price in')} {industry}</div>", unsafe_allow_html=True)
             st.metric(label=t('Average Price'), value=f"${average_price_industry:,.2f}")
@@ -259,7 +259,7 @@ def display_industry_data(df, industry):
             fig1 = px.histogram(filtered_df, x='price', title=t('Distribution of Prices'))
             st.plotly_chart(fig1)
             
-            fig2 = px.histogram(filtered_df.groupby('customer_id')['price'].sum().reset_index(), x='price', title=t('Distribution of Customer Lifetime Values'))
+            fig2 = px.histogram(filtered_df.groupby('customer id')['price'].sum().reset_index(), x='price', title=t('Distribution of Customer Lifetime Values'))
             st.plotly_chart(fig2)
         else:
             st.warning(f"{t('No price or order data available for')} {industry}.")
@@ -270,11 +270,11 @@ def display_sales_by_state(df):
     st.markdown(f"<div class='section-header'>{t('Sales by State')}</div>", unsafe_allow_html=True)
     
     if not df.empty:
-        orders_by_state = df.groupby('customer_state').size().reset_index(name='orders')
+        orders_by_state = df.groupby('customer state').size().reset_index(name='orders')
         
         fig = px.choropleth(orders_by_state, 
                             geojson="https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/brazil-states.geojson",
-                            locations='customer_state', 
+                            locations='customer state', 
                             featureidkey="properties.sigla", 
                             color='orders', 
                             color_continuous_scale="Viridis",
@@ -287,10 +287,10 @@ def display_sales_by_state(df):
 if tab == t("Graphs"):
     display_graphs(df_customers_filtered)
 elif tab == t("State Data"):
-    state = st.selectbox(t("Select a state"), df_state['customer_state'].unique())
+    state = st.selectbox(t("Select a state"), df_state['customer state'].unique())
     display_state_data(df_state, state)
 elif tab == t("Industry Data"):
-    industry = st.selectbox(t("Select an industry"), df_industry['product_category_name'].unique())
+    industry = st.selectbox(t("Select an industry"), df_industry['product category name'].unique())
     display_industry_data(df_industry, industry)
 elif tab == t("Sales by State"):
     display_sales_by_state(df_customers_filtered)
