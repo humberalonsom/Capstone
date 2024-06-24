@@ -196,7 +196,7 @@ def display_search_results(df):
     else:
         st.markdown(f"<div class='sub-title'>{t('No customer data to display. Upload an Excel file or use the search bar to find customers.')}</div>", unsafe_allow_html=True)
 
-display_search_results(df_customers)
+display_search_results(cluters_cleaned_data.csv)
 
 # Crear pestañas
 tab = st.selectbox(t("Select a tab"), [t("Graphs"), t("State Data"), t("Industry Data"), t("Sales by State")])
