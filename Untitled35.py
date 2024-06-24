@@ -15,7 +15,7 @@ def load_data(file_path):
         st.error(f"El archivo {file_path} no se encontró.")
         return pd.DataFrame()
 
-df_customers = load_data("clusters_cleaned_data.csv")
+df_customers = load_data("cluters_cleaned_data.csv")
 df_state = load_data("state.csv")
 df_industry = load_data("industry.csv")
 
