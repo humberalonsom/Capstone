@@ -15,7 +15,7 @@ def load_data(file_path):
         st.error(f"El archivo {file_path} no se encontró.")
         return pd.DataFrame()
 
-df_customers = load_data("cluters_cleaned_data.csv")
+df_customers = load_data("clustered_df.csv")
 df_state = load_data("state.csv")
 df_industry = load_data("industry.csv")
 
@@ -204,10 +204,10 @@ tab = st.selectbox(t("Select a tab"), [t("Graphs"), t("State Data"), t("Industry
 def display_graphs(df):
     if not df.empty:
         st.markdown(f"<div class='section-header'>{t('Graphs')}</div>", unsafe_allow_html=True)
-        st.markdown(f"<div class='section-header'>{t('Grade Distribution')}</div>", unsafe_allow_html=True)
-        grade_pie_chart = px.pie(df, names='grade', title=t('Grade Distribution'))
-        grade_pie_chart.update_layout(title_text=t('Grade Distribution'), template='plotly_dark')
-        st.plotly_chart(grade_pie_chart)
+        st.markdown(f"<div class='section-header'>{t('Cluster Distribution')}</div>", unsafe_allow_html=True)
+        cluster_pie_chart = px.pie(df, names='cluster', title=t('Cluster Distribution'))
+        cluster_pie_chart.update_layout(title_text=t('Cluster Distribution'), template='plotly_dark')
+        st.plotly_chart(cluster_pie_chart)
 
         st.markdown(f"<div class='section-header'>{t('Average Price per Industry')}</div>", unsafe_allow_html=True)
         average_price_data = df.groupby('product_category_name')['average_price'].mean().reset_index()
@@ -298,3 +298,4 @@ elif tab == t("Industry Data"):
     display_industry_data(df_industry, industry)
 elif tab == t("Sales by State"):
     display_sales_by_state(df_customers_filtered)
+La base de datos para sacar la información, ahora se llama: cluters_cleaned_data.csv
