@@ -19,6 +19,18 @@ df_customers = load_data("clustered_df.csv")
 df_state = load_data("state.csv")
 df_industry = load_data("industry.csv")
 
+# Mapping for cluster labels
+cluster_labels = {
+    0: "Very Low",
+    1: "Low",
+    2: "Medium",
+    3: "High",
+    4: "Very High"
+}
+
+# Apply cluster labels to the dataframe
+df_customers['cluster_label'] = df_customers['cluster'].map(cluster_labels)
+
 # Función para reemplazar guiones bajos con espacios y capitalizar
 def format_label(label):
     return label.replace('_', ' ').capitalize()
@@ -205,7 +217,7 @@ def display_graphs(df):
     if not df.empty:
         st.markdown(f"<div class='section-header'>{t('Graphs')}</div>", unsafe_allow_html=True)
         st.markdown(f"<div class='section-header'>{t('Cluster Distribution')}</div>", unsafe_allow_html=True)
-        cluster_pie_chart = px.pie(df, names='cluster', title=t('Cluster Distribution'))
+        cluster_pie_chart = px.pie(df, names='cluster_label', title=t('Cluster Distribution'))
         cluster_pie_chart.update_layout(title_text=t('Cluster Distribution'), template='plotly_dark')
         st.plotly_chart(cluster_pie_chart)
 
