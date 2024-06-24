@@ -298,4 +298,4 @@ elif tab == t("Industry Data"):
     display_industry_data(df_industry, industry)
 elif tab == t("Sales by State"):
     display_sales_by_state(df_customers_filtered)
-La base de datos para sacar la información, ahora se llama: cluters_cleaned_data.csv
+
