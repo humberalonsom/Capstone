@@ -3,10 +3,10 @@ import pandas as pd
 import plotly.express as px
 from googletrans import Translator
 
-# Configurar la página de Streamlit
+# Sttreamlit settings
 st.set_page_config(page_title="Customer Insights Dashboard", layout="wide")
 
-# Cargar los datos del archivo CSV
+# Load CSV
 @st.cache_data(show_spinner=True)
 def load_data(file_path):
     try:
@@ -31,11 +31,11 @@ cluster_labels = {
 # Apply cluster labels to the dataframe
 df_customers['cluster_label'] = df_customers['cluster'].map(cluster_labels)
 
-# Función para reemplazar guiones bajos con espacios y capitalizar
+# Replace "_" to " " 
 def format_label(label):
     return label.replace('_', ' ').capitalize()
 
-# Añadir estilos CSS personalizados directamente en el código
+# CSS Styles
 def inject_css():
     st.markdown("""
         <style>
@@ -122,7 +122,7 @@ def inject_css():
 
 inject_css()
 
-# Mostrar el logo en la parte superior
+# Show logo
 st.markdown("""
     <div style='text-align: center;'>
         <img src='https://raw.githubusercontent.com/humberalonsom/Capstone/main/olist_logo.png' width='200'>
@@ -146,10 +146,10 @@ for lang, (code, flag_url) in languages.items():
     """, unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
-# Título principal
+# Title
 st.markdown("<div class='main-title'>Customer Insights Dashboard</div>", unsafe_allow_html=True)
 
-# Función para traducir texto
+# Translator
 translator = Translator()
 
 @st.cache_data(show_spinner=True)
@@ -159,18 +159,18 @@ def translate_text(text, dest_language):
     except Exception as e:
         return text
 
-# Obtener el idioma seleccionado de la URL
+# Get lenguage
 query_params = st.experimental_get_query_params()
 dest_language = query_params.get("lang", ["en"])[0]
 
-# Traducir texto de la interfaz
+# Traduce
 def t(text):
     return translate_text(text, dest_language)
 
-# Variables para almacenamiento temporal de resultados
+# Save temporally results
 df_customers_filtered = pd.DataFrame()
 
-# Función para manejar la carga de archivos
+# Upload files
 def handle_file_upload(uploaded_file):
     if uploaded_file:
         try:
@@ -187,18 +187,18 @@ def handle_file_upload(uploaded_file):
             st.sidebar.error(t("Error processing the uploaded file. Please ensure it is an Excel file with a 'customer_id' column."))
     return pd.DataFrame()
 
-# Cargar archivo Excel
+# load excel
 uploaded_file = st.sidebar.file_uploader(t("Upload an Excel file with Customer IDs"), type=["xlsx"])
 df_customers_filtered = handle_file_upload(uploaded_file)
 
-# Interfaz para la búsqueda manual
+# Manual search
 st.sidebar.markdown(f"<div class='section-header'>{t('Manual Search')}</div>", unsafe_allow_html=True)
 customer_id = st.sidebar.text_input(t("Customer ID:"))
 if st.sidebar.button(t("Search")):
     query = df_customers[df_customers['customer_id'].astype(str).str.strip() == customer_id.strip()]
     df_customers_filtered = pd.concat([df_customers_filtered, query]).drop_duplicates()
 
-# Mostrar los datos cargados o buscados manualmente si existen
+# Show uploded data
 def display_search_results(df):
     if not df.empty:
         st.markdown(f"<div class='sub-title'>{t('Search Results')}</div>", unsafe_allow_html=True)
@@ -210,7 +210,7 @@ def display_search_results(df):
 
 display_search_results(df_customers_filtered)
 
-# Crear pestañas
+# Create windowa
 tab = st.selectbox(t("Select a tab"), [t("Graphs"), t("State Data"), t("Industry Data"), t("Sales by State")])
 
 def display_graphs(df):
@@ -259,7 +259,7 @@ def display_industry_data(df, industry):
         df_display.columns = [format_label(col) for col in df_display.columns]
         st.write(df_display)
 
-        # Calcular el precio promedio y el valor de vida del cliente basado en pedidos
+        # Calculate average price and lifetime value
         if 'price' in filtered_df.columns and 'order_id' in filtered_df.columns:
             average_price_industry = filtered_df['price'].mean()
             customer_lifetime_value_industry = filtered_df.groupby('customer_id')['price'].sum().mean()
